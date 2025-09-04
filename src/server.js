@@ -19,7 +19,8 @@ const app = express();
 // Define a list of allowed origins
 const allowedOrigins = [
   'http://localhost:5173', // Your local frontend for development
-  'https://expensetracker-azaz.vercel.app' // Your deployed Vercel frontend
+  'https://expensetracker-azaz.vercel.app',
+  'https://expense-tracker-frontend-git-main-azaz-arfins-projects.vercel.app' // Your deployed Vercel frontend
 ];
 
 const corsOptions = {
