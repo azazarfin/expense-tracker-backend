@@ -2,15 +2,28 @@ const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
-// Middleware to protect routes by verifying token
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
     try {
+      // Get token from header
       token = req.headers.authorization.split(' ')[1];
+
+      // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      // Get user from the token (don't include the password)
       req.user = await User.findById(decoded.id).select('-password');
+
+      if (!req.user) {
+        res.status(401);
+        throw new Error('Not authorized, user not found');
+      }
+
       next();
     } catch (error) {
       console.error(error);
@@ -25,16 +38,13 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Middleware to authorize admin users
 const admin = (req, res, next) => {
-  // This middleware should run AFTER the 'protect' middleware
-  if (req.user && req.user.role === 'admin') {
-    next(); // User is an admin, proceed to the next function
-  } else {
-    res.status(403); // 403 Forbidden
-    throw new Error('Not authorized as an admin');
-  }
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        res.status(401);
+        throw new Error('Not authorized as an admin');
+    }
 };
 
-// Export both functions
 module.exports = { protect, admin };
