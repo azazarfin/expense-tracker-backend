@@ -1,8 +1,14 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true });
-const { deleteActivity } = require('../controllers/activityController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const router = express.Router();
+const { registerUser, loginUser } = require('../controllers/authController');
 
-router.route('/:activityId').delete(protect, admin, deleteActivity);
+// Define the routes
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+
+// Add this new test route
+router.get('/test', (req, res) => {
+  res.send('Auth test route is working!');
+});
 
 module.exports = router;
