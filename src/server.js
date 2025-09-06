@@ -52,6 +52,11 @@ app.use('/api/chapters/:chapterId/activities', activityRoutes); // 2. Use the ne
 app.use('/api/auth', authRoutes);
 app.use('/api/chapters', chapterRoutes);
 
+// Add a root route
+app.get('/', (req, res) => {
+  res.send('API is running...');
+});
+
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, '0.0.0.0', () => {
