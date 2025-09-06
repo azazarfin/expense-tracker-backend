@@ -20,32 +20,8 @@ const app = express(); // Define app once
 
 // --- CORS CONFIGURATION ---
 // Define a list of allowed frontend origins
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://expensetracker-azaz.vercel.app',
-  'https://expense-tracker-frontend-azaz-arfins-projects.vercel.app', // Add this line
-  'https://expense-tracker-frontend-git-main-azaz-arfins-projects.vercel.app'
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman or mobile apps)
-    if (!origin) return callback(null, true);
-
-    // If the origin is in our allowed list, allow it. Otherwise, block it.
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-};
-
-// --- MIDDLEWARE ---
-app.use(cors(corsOptions)); // Use the detailed corsOptions
-app.use(express.json()); // For parsing application/json
+app.use(cors()); // This allows requests from ANY origin
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
 
 
