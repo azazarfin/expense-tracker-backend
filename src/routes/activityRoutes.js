@@ -1,14 +1,9 @@
 const express = require('express');
-const router = express.Router();
-const { registerUser, loginUser } = require('../controllers/authController');
+const router = express.Router({ mergeParams: true }); // Allows access to chapterId from the parent route
+const { deleteActivity } = require('../controllers/activityController');
+const { protect, admin } = require('../middleware/authMiddleware');
 
-// Define the routes
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-
-// Add this new test route
-router.get('/test', (req, res) => {
-  res.send('Auth test route is working!');
-});
+// Maps DELETE /api/chapters/:chapterId/activities/:activityId to the deleteActivity controller
+router.route('/:activityId').delete(protect, admin, deleteActivity);
 
 module.exports = router;
