@@ -20,7 +20,9 @@ const app = express(); // Define app once
 
 // --- CORS CONFIGURATION ---
 // Define a list of allowed frontend origins
-app.use(cors()); // This allows requests from ANY origin
+app.use(cors({
+  origin: 'https://expensetracker-azaz.vercel.app'
+}));
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
 
