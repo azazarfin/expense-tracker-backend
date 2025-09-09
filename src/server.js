@@ -20,7 +20,8 @@ const app = express(); // Define app once
 
 // --- CORS CONFIGURATION ---
 const allowedOrigins = [
-  "https://mealexpensetracker.netlify.app", // Your production frontend
+  "https://mealexpensetracker.netlify.app",
+  "https://mealexpensetrackertest.netlify.app",// Your production frontend
   "http://localhost:5173", // For local development
 ];
 
