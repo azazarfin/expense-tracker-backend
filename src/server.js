@@ -19,26 +19,27 @@ connectDB();
 const app = express(); // Define app once
 
 // --- CORS CONFIGURATION ---
-// Define a list of allowed frontend origins
 const allowedOrigins = [
-  "https://expensetracker-azaz.vercel.app",
+  "https://expensetracker-azaz.vercel.app", // Your production frontend
   "http://localhost:5173", // For local development
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Check if the origin is in our allowed list or if it's a Vercel preview URL
+    if (!origin || allowedOrigins.includes(origin) || /.vercel.app$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(null, true);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
-}));
+};
+
+app.use(cors(corsOptions));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
